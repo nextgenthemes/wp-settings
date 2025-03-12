@@ -24,7 +24,7 @@ You need composer and php 7.4+
 	"type": "wordpress-plugin",
 	"require": {
 		"php": ">=7.4",
-		"nextgenthemes/wp-shared": "@dev",
+		"nextgenthemes/wp-settings": "@dev",
 		"automattic/jetpack-autoloader": "^v5.0.2"
 	},
 	"config": {
@@ -59,6 +59,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 const VERSION       = '0.0.1';
 const PLUGIN_FILE   = __FILE__;
 const PLUGIN_DIR    = __DIR__;
+
+require_once __DIR__ . '/vendor/autoload_packages.php';
+require_once __DIR__ . '/php/init.php';
 ```
 
 Assuming your code for settings in a different file. `fn-settings.php`
