@@ -1,5 +1,7 @@
 # Modern Lightweight WordPress Settings Framework
 
+Contribution are very welcome in the [ARVE Repo](https://github.com/nextgenthemes/advanced-responsive-video-embedder), also file issues there.
+
 Making use of the WP Interacticity API this Framework helps you create modern settings pages that:
 
 * Create Settings pages for you with minimal effort or boilerplace.
@@ -16,6 +18,7 @@ This repo also contains some general purpose utility functions that may be usefu
 ## Usage
 
 You need composer and php 7.4+
+
 `composer.json`
 
 ```json
