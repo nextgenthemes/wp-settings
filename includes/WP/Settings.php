@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Nextgenthemes\WP;
 
+use WP_REST_Request;
+use WP_REST_Response;
 use function wp_interactivity_data_wp_context as data_wp_context;
 
 class Settings {
@@ -249,7 +251,7 @@ class Settings {
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
-				'callback'            => function ( \WP_REST_Request $request ): \WP_REST_Response {
+				'callback'            => function ( WP_REST_Request $request ): WP_REST_Response {
 					$this->save_options( $request->get_params() );
 					return rest_ensure_response( __( 'Options saved', 'advanced-responsive-video-embedder' ) );
 				},
@@ -288,7 +290,7 @@ class Settings {
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
-				'callback'            => function ( \WP_REST_Request $request ) {
+				'callback'            => function ( WP_REST_Request $request ) {
 
 					$p = $request->get_params();
 
@@ -310,15 +312,36 @@ class Settings {
 
 			register_rest_route(
 				$this->rest_namespace,
-				'/delete-oembed-cache',
+				'/delete-cache',
 				array(
 					'methods'             => 'POST',
+					'args'                => array(
+						'type' => array(
+							'required' => true,
+							'type'     => 'string',
+							'default'  => 'oembed',
+						),
+						'part' => array(
+							'required' => false,
+							'type'     => 'string',
+							'default'  => 'arve',
+						),
+					),
 					'permission_callback' => function () {
-						#return true;
 						return current_user_can( 'manage_options' );
 					},
-					'callback'            => function (): \WP_REST_Response {
-						return rest_ensure_response( \Nextgenthemes\ARVE\delete_oembed_cache() );
+					'callback'            => function ( WP_REST_Request $request ): WP_REST_Response {
+
+						$p = $request->get_params();
+
+						switch ( $p['type'] ) {
+							case 'oembed':
+								return rest_ensure_response( \Nextgenthemes\ARVE\delete_oembed_cache( $p['part'] ) );
+							case 'transient':
+								return rest_ensure_response( \Nextgenthemes\ARVE\delete_transients_by_prefix( $p['part'] ) );
+							default:
+								return rest_ensure_response( 'error' );
+						}
 					},
 				)
 			);

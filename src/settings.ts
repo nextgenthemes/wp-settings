@@ -172,7 +172,16 @@ function setupInteractivityApi() {
 					} );
 			},
 			deleteOembedCache: () => {
-				actions.restCall( '/delete-oembed-cache', { delete: true } );
+				actions.restCall( '/delete-cache', {
+					type: 'oembed',
+					part: 'arve',
+				} );
+			},
+			deleteYouTubeApiTransients: () => {
+				actions.restCall( '/delete-cache', {
+					type: 'transients',
+					part: 'ngt_www.googleapis.com/youtube',
+				} );
 			},
 			// debounced version created later
 			saveOptionsReal: () => {
@@ -384,6 +393,7 @@ interface storeInterface {
 		checkboxChange: ( event: Event ) => void;
 		selectImage: () => void;
 		deleteOembedCache: () => void;
+		deleteYouTubeApiTransients: () => void;
 		eddLicenseAction: () => void;
 		resetOptionsSection: () => void;
 		restCall: (
