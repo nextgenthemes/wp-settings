@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Nextgenthemes\WP;
 
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use function wp_interactivity_data_wp_context as data_wp_context;
@@ -12,7 +13,7 @@ class Settings {
 	/**
 	 * The slug of the parent menu under which the settings menu will appear.
 	 */
-	private string $menu_parent_slug = 'options-general.php';
+	private string $menu_parent_slug;
 
 	private string $menu_title;
 	private string $settings_page_title;
@@ -99,7 +100,7 @@ class Settings {
 
 	public function __construct( array $args ) {
 
-		$this->menu_parent_slug    = $args['menu_parent_slug'] ?? $this->menu_parent_slug;
+		$this->menu_parent_slug    = $args['menu_parent_slug'] ?? 'options-general.php';
 		$this->base_url            = trailingslashit( $args['base_url'] );
 		$this->base_path           = trailingslashit( $args['base_path'] );
 		$this->plugin_file         = $args['plugin_file'] ?? null;
@@ -290,12 +291,13 @@ class Settings {
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
+				/** @return WP_Error|WP_REST_Response */
 				'callback'            => function ( WP_REST_Request $request ) {
 
 					$p = $request->get_params();
 
 					if ( ! in_array( $p['edd_action'], array( 'activate_license', 'deactivate_license', 'check_license' ), true ) ) {
-						return new \WP_Error( 'invalid_action', 'Invalid action', array( 'status' => 500 ) );
+						return new WP_Error( 'invalid_action', 'Invalid action', array( 'status' => 500 ) );
 					}
 
 					$options = $this->get_options();
@@ -312,7 +314,7 @@ class Settings {
 
 			register_rest_route(
 				$this->rest_namespace,
-				'/delete-cache',
+				'/delete-oembed-cache',
 				array(
 					'methods'             => 'POST',
 					'args'                => array(
@@ -321,26 +323,46 @@ class Settings {
 							'type'     => 'string',
 							'default'  => 'oembed',
 						),
-						'part' => array(
+						'like' => array(
 							'required' => false,
 							'type'     => 'string',
-							'default'  => 'arve',
+							'default'  => '',
+						),
+						'not_like' => array(
+							'required' => false,
+							'type'     => 'string',
+							'default'  => '',
+						),
+						'prefix' => array(
+							'required' => false,
+							'type'     => 'string',
+							'default'  => '',
+						),
+						'transient' => array(
+							'required' => false,
+							'type'     => 'string',
+							'default'  => '',
 						),
 					),
 					'permission_callback' => function () {
 						return current_user_can( 'manage_options' );
 					},
-					'callback'            => function ( WP_REST_Request $request ): WP_REST_Response {
+					/** @return WP_Error|WP_REST_Response */
+					'callback'            => function ( WP_REST_Request $request ) {
 
 						$p = $request->get_params();
 
 						switch ( $p['type'] ) {
 							case 'oembed':
-								return rest_ensure_response( \Nextgenthemes\ARVE\delete_oembed_cache( $p['part'] ) );
+								return rest_ensure_response( \Nextgenthemes\ARVE\delete_oembed_cache( $p['like'], $p['not_like'] ) );
 							case 'transient':
-								return rest_ensure_response( \Nextgenthemes\ARVE\delete_transients_by_prefix( $p['part'] ) );
+								return rest_ensure_response( delete_transient( $p['transient'] ) );
+							case 'transients':
+								return rest_ensure_response( \Nextgenthemes\ARVE\delete_transients( $p['prefix'], $p['like'] ) );
+							case 'wp_cache_flush':
+								return rest_ensure_response( wp_cache_flush() );
 							default:
-								return rest_ensure_response( 'error' );
+								return ( new WP_Error( 'invalid_type', 'Invalid type', array( 'status' => 500 ) ) );
 						}
 					},
 				)
@@ -520,18 +542,13 @@ class Settings {
 
 	public function register_setting_page(): void {
 
-		$parent_slug = $this->menu_parent_slug;
-		// The HTML Document title for our settings page.
-		$page_title = $this->settings_page_title;
-		// The menu item title for our settings page.
-		$menu_title = $this->menu_title;
-		// The user permission required to view our settings page.
-		$capability = 'manage_options';
-		// The URL slug for our settings page.
-		$menu_slug = $this->slugged_namespace;
-		// The callback function for rendering our settings page HTML.
-		$callback = array( $this, 'print_admin_page' );
-
-		add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $callback );
+		add_submenu_page(
+			$this->menu_parent_slug,
+			$this->settings_page_title,        // The HTML Document title for our settings page.
+			$this->menu_title,
+			'manage_options',                  // The user permission required to view our settings page.
+			$this->slugged_namespace,          // The URL slug for our settings page.
+			array( $this, 'print_admin_page' ) // The callback function for rendering our settings page HTML.
+		);
 	}
 }

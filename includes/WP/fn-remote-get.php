@@ -57,8 +57,7 @@ function remote_get_json_cached( string $url, array $args = array(), string $jso
 						array( 'https' )
 					),
 					esc_html( $url ),
-					esc_html( $json_name ),
-					esc_html( $response )
+					esc_html( $json_name )
 				),
 				compact( 'url', 'json_name', 'response' )
 			);
@@ -173,6 +172,8 @@ function remote_get_head_cached( string $url, array $args = array(), int $time =
 
 /**
  * Retrieves the body content from a remote URL, with caching for improved performance.
+ *
+ * TODO maybe use json to encode WP_Error to avoid WP using serialize
  *
  * @param string $url The URL of the remote resource.
  * @param array $args Optional. Additional arguments to include in the request.

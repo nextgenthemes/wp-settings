@@ -174,13 +174,24 @@ function setupInteractivityApi() {
 			deleteOembedCache: () => {
 				actions.restCall( '/delete-cache', {
 					type: 'oembed',
-					part: 'arve',
+					not_like: 'class="arve',
 				} );
 			},
-			deleteYouTubeApiTransients: () => {
+			deleteYouTubeCaches: () => {
 				actions.restCall( '/delete-cache', {
 					type: 'transients',
-					part: 'ngt_www.googleapis.com/youtube',
+					prefix: 'ngt_www.googleapis.com/youtube',
+					like: 'status_code:403',
+				} );
+
+				actions.restCall( '/delete-cache', {
+					type: 'transients',
+					prefix: 'ngt_www.googleapis.com/youtube',
+				} );
+
+				actions.restCall( '/delete-cache', {
+					type: 'transient',
+					part: 'arve_youtube_api_error',
 				} );
 			},
 			// debounced version created later
