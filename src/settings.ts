@@ -171,27 +171,15 @@ function setupInteractivityApi() {
 						}
 					} );
 			},
-			deleteOembedCache: () => {
-				actions.restCall( '/delete-cache', {
-					type: 'oembed',
-					not_like: 'class="arve',
-				} );
-			},
-			deleteYouTubeCaches: () => {
-				actions.restCall( '/delete-cache', {
-					type: 'transients',
-					prefix: 'ngt_www.googleapis.com/youtube',
-					like: 'status_code:403',
-				} );
+			deleteCaches: () => {
+				const context = getContext< clearCacheContext >();
 
-				actions.restCall( '/delete-cache', {
-					type: 'transients',
-					prefix: 'ngt_www.googleapis.com/youtube',
-				} );
-
-				actions.restCall( '/delete-cache', {
-					type: 'transient',
-					part: 'arve_youtube_api_error',
+				actions.restCall( '/delete-caches', {
+					type: context.type,
+					prefix: context.prefix,
+					like: context.like,
+					not_like: context.type,
+					delete_option: context.delete_option,
 				} );
 			},
 			// debounced version created later
@@ -403,8 +391,7 @@ interface storeInterface {
 		inputChange: ( event: Event ) => void;
 		checkboxChange: ( event: Event ) => void;
 		selectImage: () => void;
-		deleteOembedCache: () => void;
-		deleteYouTubeApiTransients: () => void;
+		deleteCaches: () => void;
 		eddLicenseAction: () => void;
 		resetOptionsSection: () => void;
 		restCall: (
@@ -430,6 +417,14 @@ interface optionContext {
 	edd_action: string;
 	edd_store_url: string;
 	activeTabs: { [ key: string ]: boolean };
+}
+
+interface clearCacheContext {
+	type: string;
+	like: string;
+	not_like: string;
+	prefix: string;
+	delete_option: string;
 }
 
 interface configInterface {

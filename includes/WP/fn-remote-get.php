@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Nextgenthemes\WP;
 
+use DateTime;
 use Exception;
 use WP_Error;
 
@@ -31,7 +32,7 @@ function remote_get_json_cached( string $url, array $args = array(), string $jso
 
 	try {
 		$response = json_decode( $response, true, 128, JSON_THROW_ON_ERROR );
-	} catch ( Exception $e ) {
+	} catch ( Exception $exception ) {
 
 		return new WP_Error(
 			'json-decode-error',
@@ -39,9 +40,9 @@ function remote_get_json_cached( string $url, array $args = array(), string $jso
 				// Translators: %1$s URL, %2$s json_decode error
 				esc_html__( 'Remote get url: %1$s json_decode error: %2$s.', 'advanced-responsive-video-embedder' ),
 				esc_html( $url ),
-				esc_html( $e->getMessage() )
+				esc_html( $exception->getMessage() )
 			),
-			compact( 'url', 'response', 'e' )
+			compact( 'url', 'response', 'exception' )
 		);
 	}
 
@@ -80,6 +81,7 @@ function remote_get_body( string $url, array $args = array() ) {
 
 	$response      = wp_safe_remote_get( $url, $args );
 	$response_code = wp_remote_retrieve_response_code( $response );
+	$body          = wp_remote_retrieve_body( $response );
 
 	if ( is_wp_error( $response ) ) {
 		return $response;
@@ -99,9 +101,7 @@ function remote_get_body( string $url, array $args = array() ) {
 		);
 	}
 
-	$response = wp_remote_retrieve_body( $response );
-
-	if ( '' === $response ) {
+	if ( '' === $body ) {
 		return new WP_Error(
 			'empty-body',
 			sprintf(
@@ -113,7 +113,7 @@ function remote_get_body( string $url, array $args = array() ) {
 		);
 	}
 
-	return $response;
+	return $body;
 }
 
 /**
@@ -190,8 +190,6 @@ function _remote_get_cached( string $url, array $args, int $time, string $type )
 	$transient_name = shorten_transient_name( $transient_name );
 	$response       = $time ? get_transient( $transient_name ) : false;
 
-	logfile( $transient_name );
-
 	if ( false === $response ) {
 
 		if ( 'head' === $type ) {
@@ -213,10 +211,11 @@ function _remote_get_cached( string $url, array $args, int $time, string $type )
 				$msg .= '<br>' . sprintf(
 					wp_kses(
 						// Translators: 1 Time in seconds, 2 Transient name.
-						__( 'This error is cached for <code>%1$d</code> seconds. If you delete the transient <code>%2$s</code> the remote call will be made again.', 'advanced-responsive-video-embedder' ),
+						__( 'Error triggerd on %1$s and is cached for %2$d seconds. If you delete the transient <code>%3$s</code> the remote call will be made again.', 'advanced-responsive-video-embedder' ),
 						array( 'code' => [] ),
 						array( 'https' )
 					),
+					current_datetime()->format( DATETIME::ATOM ),
 					$time,
 					esc_html( $transient_name )
 				);

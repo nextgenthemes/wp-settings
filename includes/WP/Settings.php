@@ -314,14 +314,14 @@ class Settings {
 
 			register_rest_route(
 				$this->rest_namespace,
-				'/delete-oembed-cache',
+				'/delete-caches',
 				array(
 					'methods'             => 'POST',
 					'args'                => array(
 						'type' => array(
 							'required' => true,
 							'type'     => 'string',
-							'default'  => 'oembed',
+							'default'  => '',
 						),
 						'like' => array(
 							'required' => false,
@@ -338,7 +338,7 @@ class Settings {
 							'type'     => 'string',
 							'default'  => '',
 						),
-						'transient' => array(
+						'delete_option' => array(
 							'required' => false,
 							'type'     => 'string',
 							'default'  => '',
@@ -352,13 +352,17 @@ class Settings {
 
 						$p = $request->get_params();
 
+						if ( ! empty( $p['delete_option'] ) ) {
+							delete_option( $p['delete_option'] );
+							// just do this silently and continue to so we can clear caches at the same time.
+						}
+
 						switch ( $p['type'] ) {
 							case 'oembed':
 								return rest_ensure_response( \Nextgenthemes\ARVE\delete_oembed_cache( $p['like'], $p['not_like'] ) );
-							case 'transient':
-								return rest_ensure_response( delete_transient( $p['transient'] ) );
 							case 'transients':
 								return rest_ensure_response( \Nextgenthemes\ARVE\delete_transients( $p['prefix'], $p['like'] ) );
+							case 'flush_object_cache':
 							case 'wp_cache_flush':
 								return rest_ensure_response( wp_cache_flush() );
 							default:
