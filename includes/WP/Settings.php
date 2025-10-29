@@ -474,6 +474,7 @@ class Settings {
 					[
 						'activeTabs' => $active_tabs,
 						'help'       => true,
+						'settings'   => $this->settings->to_array(),
 					]
 				);
 				?>
