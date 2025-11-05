@@ -8,10 +8,12 @@ use ErrorException;
 use InvalidArgumentException;
 
 /**
+ * @phpstan-type NgtSettingValue   string|int|float|bool
+ * @phpstan-type NgtDependsSetting array<int, array<string, NgtSettingValue>>
  * @phpstan-type NgtSetting array{
  *   tab?: string,
  *   option_key?: string,
- *   default: mixed,
+ *   default: NgtSettingValue,
  *   label: string,
  *   type: string,
  *   description?: string,
@@ -19,7 +21,7 @@ use InvalidArgumentException;
  *   shortcode?: bool,
  *   option?: bool,
  *   options?: array<string, string>,
- *   depends?: array<array<string, mixed>>
+ *   depends?: NgtDependsSetting
  * }
  */
 class SettingValidator {
@@ -29,7 +31,7 @@ class SettingValidator {
 	/**
 	 * Default for the setting
 	 *
-	 * @var string|int|bool
+	 * @var NgtSettingValue
 	 */
 	public $default;
 
@@ -55,14 +57,14 @@ class SettingValidator {
 	/**
 	 * The type of the setting
 	 *
-	 * @var string 'string', 'integer' or 'boolean'
+	 * @var 'string' | 'integer' | 'boolean'
 	 */
 	public string $type;
 	public ?string $placeholder;
 	public ?string $description;
 
 	/**
-	 * Options for <select> value => label
+	 * Options for <select>, value => label
 	 *
 	 * @var array <string, string>
 	 */
@@ -78,13 +80,13 @@ class SettingValidator {
 	/**
 	 * Dependencies for the setting
 	 *
-	 * @var null | array<string, mixed|array<array-key, mixed>>
+	 * @var NgtDependsSetting
 	 */
-	public $depends;
+	public ?array $depends;
 
 	/**
-	 * @param NgtSetting $setting
-	 * @param bool                       $arve     Indicates specific actions for ARVE plugin only.
+	 * @param NgtSetting $setting  The setting to validate.
+	 * @param bool       $arve     Indicates specific actions for ARVE plugin only.
 	 */
 	public function __construct( array $setting, bool $arve = false ) {
 
