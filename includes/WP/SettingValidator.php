@@ -47,20 +47,25 @@ class SettingValidator {
 	public ?string $description;
 
 	/**
-	 * Options for to choose from, used for 'select'
-	 * Array key holds the string for the option,
-	 * Array value holds translatable option for display.
+	 * Options for <select> value => label
 	 *
 	 * @var array <string, string>
 	 */
 	public ?array $options;
 	public string $sanitize_callback;
 	public string $ui_element;
-	public string $ui_element_type;
+	public ?string $ui_element_type = null;
 
 	public ?string $edd_store_url;
 	public ?string $edd_item_name;
 	public ?int $edd_item_id;
+
+	/**
+	 * Dependencies for the setting
+	 *
+	 * @var null | array<string, mixed|array<array-key, mixed>>
+	 */
+	public $depends;
 
 	/**
 	 * @param array <string, mixed> $setting
@@ -84,6 +89,7 @@ class SettingValidator {
 		$this->description   = $setting['description'] ?? null;
 		$this->edd_item_id   = $setting['edd_item_id'] ?? null;
 		$this->edd_item_name = $setting['edd_item_name'] ?? null;
+		$this->depends       = $setting['depends'] ?? null;
 
 		if ( isset( $setting['edd_store_url'] ) ) {
 			$this->set_edd_store_url( $setting['edd_store_url'] );
@@ -103,10 +109,9 @@ class SettingValidator {
 			throw new InvalidArgumentException( esc_html( 'Property ' . $this->option_key . ' must be boolean' ) );
 		}
 
-		$this->type            = 'string';
-		$this->ui_element      = 'select';
-		$this->ui_element_type = 'select';
-		$this->options         = array(
+		$this->type       = 'string';
+		$this->ui_element = 'select';
+		$this->options    = array(
 			''      => __( 'Default', 'advanced-responsive-video-embedder' ),
 			'true'  => __( 'True', 'advanced-responsive-video-embedder' ),
 			'false' => __( 'False', 'advanced-responsive-video-embedder' ),

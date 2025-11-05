@@ -115,8 +115,6 @@ function option_block( string $key, SettingValidator $setting, array $tabs ): vo
 				} else {
 					label( $input_id, $setting, $tabs );
 
-					echo '<h1 data-wp-text="context.settings.' . esc_attr( $key ) . '.label"></h1>';
-
 					echo first_tag_attr( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 						'<input>',
 						array(
@@ -222,16 +220,15 @@ function label( string $input_id, SettingValidator $setting, array $tabs ): void
 		<label
 			for="<?= esc_attr( $input_id ); ?>"
 			class="ngt-label ngt-label--<?= esc_attr( $setting->tab ); ?>"
-			data-wp-text="context.settings.url.label"
 		>
 		<?php
-		// echo wp_kses(
-		// 	$setting->label,
-		// 	[
-		// 		'code' => [],
-		// 		'span' => [],
-		// 	]
-		// );
+		echo wp_kses(
+			$setting->label,
+			[
+				'code' => [],
+				'span' => [],
+			]
+		);
 		?>
 		</label>
 		<?php
