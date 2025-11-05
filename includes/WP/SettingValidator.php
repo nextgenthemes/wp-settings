@@ -7,6 +7,21 @@ namespace Nextgenthemes\WP;
 use ErrorException;
 use InvalidArgumentException;
 
+/**
+ * @phpstan-type NgtSetting array{
+ *   tab?: string,
+ *   option_key?: string,
+ *   default: mixed,
+ *   label: string,
+ *   type: string,
+ *   description?: string,
+ *   placeholder?: string,
+ *   shortcode?: bool,
+ *   option?: bool,
+ *   options?: array<string, string>,
+ *   depends?: array<array<string, mixed>>
+ * }
+ */
 class SettingValidator {
 
 	public string $option_key;
@@ -68,8 +83,8 @@ class SettingValidator {
 	public $depends;
 
 	/**
-	 * @param array <string, mixed> $setting
-	 * @param bool                  $arve     Indicates specific actions for ARVE plugin only.
+	 * @param NgtSetting $setting
+	 * @param bool                       $arve     Indicates specific actions for ARVE plugin only.
 	 */
 	public function __construct( array $setting, bool $arve = false ) {
 
