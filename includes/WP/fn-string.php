@@ -123,7 +123,7 @@ function str_contains_any( string $haystack, array $needles ): bool {
 }
 
 /**
- * Removes the query string from the given URL.
+ * Removes the query string from the given URL. Keeps #hash!
  *
  * @param string $url The input URL
  * @return string The URL without the query string
