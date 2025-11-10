@@ -167,7 +167,6 @@ class Settings {
 
 		// Merge new values with existing options
 		$updated_options = array_merge( $old_options, $new_options );
-
 		// remove all items match exact key-value pairs in defaults
 		$updated_options = array_diff_assoc( $updated_options, $this->options_defaults );
 		// remove all items that have a key that is not in defaults
@@ -185,7 +184,7 @@ class Settings {
 	 */
 	public function get_options_with_defaults( $options ): array {
 
-		// in case the option is saved as the wrong type (we could also fatal error this by tying it to array)
+		// in case the options are saved as the wrong type (we could also fatal error this by tying it to array)
 		$options = is_array( $options ) ? $options : array();
 		$options = $options + $this->options_defaults;
 
@@ -281,6 +280,10 @@ class Settings {
 	 */
 	public function get_options(): array {
 		$options = (array) get_option( $this->slugged_namespace, array() );
+
+		// Why the fuck is this needed for unit tests? The get_options_with_defaults seems not to be called in the unit tests
+		$options = $options + $this->options_defaults;
+
 		return apply_filters( $this->slashed_namespace . '/options', $options );
 	}
 
