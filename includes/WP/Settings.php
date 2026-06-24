@@ -89,21 +89,21 @@ class Settings {
 	/**
 	 * Array of current option values.
 	 *
-	 * @var array <string, NgtSettingValue>
+	 * @var array<string,NgtSettingValue>
 	 */
 	private array $options;
 
 	/**
 	 * Array of default option values.
 	 *
-	 * @var array <string, NgtSettingValue>
+	 * @var array<string,NgtSettingValue>
 	 */
 	private array $options_defaults;
 
 	/**
 	 * Array of default option values organized by section.
 	 *
-	 * @var array <string, array<string, NgtSettingValue>>
+	 * @var array<string,array<string,NgtSettingValue>>
 	 */
 	private array $options_defaults_by_section;
 
@@ -113,12 +113,12 @@ class Settings {
 	private SettingsData $settings;
 
 	/**
-	 * @var array <string, string>
+	 * @var array<string,string>
 	 */
 	private array $defined_keys = array();
 
 	/**
-	 * @param array <int|string, mixed> $args
+	 * @param array<int|string,mixed> $args
 	 */
 	public function __construct( array $args ) {
 
@@ -156,7 +156,7 @@ class Settings {
 	 * @param mixed $new_options
 	 * @param mixed $old_options
 	 *
-	 * @return array <string, NgtSettingValue> The updated option value
+	 * @return array<string,NgtSettingValue> The updated option value
 	 */
 	public function pre_update_options( $new_options, $old_options ): array {
 
@@ -191,7 +191,7 @@ class Settings {
 	 *
 	 * @param mixed $options
 	 *
-	 * @return array <string, NgtSettingValue> The updated option value
+	 * @return array<string,NgtSettingValue> The updated option value
 	 */
 	public function get_options_with_defaults( $options ): array {
 
@@ -203,8 +203,8 @@ class Settings {
 	}
 
 	/**
-	 * @param array <int|string, string> $links
-	 * @return array <int|string, string> Modified links
+	 * @param array<int|string,string> $links
+	 * @return array<int|string,string> Modified links
 	 */
 	public function add_action_links( array $links ): array {
 
@@ -287,7 +287,7 @@ class Settings {
 	}
 
 	/**
-	 * @return array <string, NgtSettingValue>
+	 * @return array<string,NgtSettingValue>
 	 */
 	public function get_options(): array {
 		$options = (array) get_option( $this->slugged_namespace, array() );
@@ -299,7 +299,7 @@ class Settings {
 	}
 
 	/**
-	 * @return array <string, NgtSettingValue>
+	 * @return array<string,NgtSettingValue>
 	 */
 	public function get_options_defaults(): array {
 		return $this->options_defaults;
@@ -310,7 +310,7 @@ class Settings {
 	}
 
 	/**
-	 * @param array <string, NgtSettingValue> $options
+	 * @param array<string,NgtSettingValue> $options
 	 */
 	public function save_options( array $options ): void {
 		update_option( $this->slugged_namespace, $options );

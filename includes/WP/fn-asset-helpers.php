@@ -66,5 +66,7 @@ function ver( string $path, ?string $stable_ver ): ?string {
 		( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ||
 		( defined( 'WP_DEBUG' ) && WP_DEBUG );
 
+	d( $path );
+
 	return $debug ? (string) filemtime( $path ) : $stable_ver;
 }

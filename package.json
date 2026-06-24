@@ -1,0 +1,13 @@
+{
+	"private": true,
+	"ngt-bind": {
+		"sym-plugin": true
+	},
+	"scripts": {
+		"start": "wp-scripts start --experimental-modules",
+		"build": "wp-scripts build --experimental-modules"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^32.4.1"
+	}
+}
