@@ -8,6 +8,7 @@
 		"build": "wp-scripts build --experimental-modules"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^32.4.1"
+		"@wordpress/scripts": "^32.4.1",
+		"webpack-notifier": "^1.15.0"
 	}
 }
