@@ -61,7 +61,7 @@ differently, what I like to do is.
 <?php
 /**
  * Plugin Name: Your Plugin Name
- * Desciption: Main pluin file
+ * Description: Main Plugin file
  * ...
  */
 
