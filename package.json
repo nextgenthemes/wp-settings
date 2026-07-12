@@ -4,6 +4,9 @@
 		"start": "wp-scripts start --experimental-modules",
 		"build": "wp-scripts build --experimental-modules"
 	},
+	"dependencies": {
+		"@wordpress/interactivity": "^6.50.0"
+	},
 	"devDependencies": {
 		"@wordpress/scripts": "^32.4.1",
 		"webpack-notifier": "^1.15.0"
