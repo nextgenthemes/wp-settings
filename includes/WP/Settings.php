@@ -309,6 +309,10 @@ class Settings {
 		return $this->settings;
 	}
 
+	public function get_tab_title( string $tab ): string {
+		return $this->tabs[ $tab ]['title'] ?? ucfirst( $tab );
+	}
+
 	/**
 	 * @param array<string,NgtSettingValue> $options
 	 */
