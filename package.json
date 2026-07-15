@@ -5,10 +5,10 @@
 		"build": "wp-scripts build --experimental-modules"
 	},
 	"dependencies": {
-		"@wordpress/interactivity": "^6.50.0"
+		"@wordpress/interactivity": "*"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^32.4.1",
+		"@wordpress/scripts": "*",
 		"webpack-notifier": "^1.15.0"
 	},
 	"ngt-bind": {
