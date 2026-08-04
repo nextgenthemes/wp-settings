@@ -145,6 +145,13 @@ function setupInteractivityApi() {
 
 				actions.saveOptions();
 			},
+			optIntoNewsAndRefresh: () => {
+				// hardcode the option value to true (opt-in to news)
+				state.options.news_opt_in = true;
+
+				// save the options and hard refresh the page so the server-rendered news box appears
+				actions.restCall(config.restSettingsUrl, { [namespace]: state.options }, true);
+			},
 			selectImage: () => {
 				if (dialog) {
 					dialog.close();
