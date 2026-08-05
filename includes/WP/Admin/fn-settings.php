@@ -74,7 +74,7 @@ function option_block( string $key, SettingValidator $setting, array $tabs ): vo
 
 	?>
 	<div 
-		class="<?php esc_attr( "ngt-opt ngt-opt--$key ngt-opt--section--$tab" ); ?>"
+		class="<?php echo esc_attr( "ngt-opt ngt-opt--$key ngt-opt--section--$tab" ); ?>"
 		data-wp-bind--hidden="!state.isActiveTab"
 		<?php echo data_wp_context( $setting->to_array() ); // phpcs:ignore ?>
 	>
@@ -87,14 +87,14 @@ function option_block( string $key, SettingValidator $setting, array $tabs ): vo
 					?>
 					<select 
 						class="form-select"
-						id="<?php esc_attr( $input_id ); ?>"
-						data-ngt-option="<?php esc_attr( $key ); ?>"
-						data-wp-bind--value="state.options.<?php esc_attr( $key ); ?>"
+						id="<?php echo esc_attr( $input_id ); ?>"
+						data-ngt-option="<?php echo esc_attr( $key ); ?>"
+						data-wp-bind--value="state.options.<?php echo esc_attr( $key ); ?>"
 						data-wp-on--change="actions.inputChange"
 						data-wp-bind--disabled="state.isSaving"
 					>
 						<?php foreach ( $setting->options as $k => $v ) : ?>
-							<option value="<?php esc_attr( $k ); ?>"><?php echo esc_html( $v ); ?></option>
+							<option value="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $v ); ?></option>
 						<?php endforeach; ?>
 					</select>
 					<?php
@@ -198,7 +198,7 @@ function license_key_ui( string $key ): void {
 		</button>
 	</span>
 
-	<pre data-wp-text="<?php esc_attr( "state.options.{$key}_status" ); ?>"></pre>
+	<pre data-wp-text="<?php echo esc_attr( "state.options.{$key}_status" ); ?>"></pre>
 	<?php
 }
 
@@ -218,8 +218,8 @@ function label( string $input_id, SettingValidator $setting, array $tabs ): void
 	?>
 	<span class="ngt-label-wrap">
 		<label
-			for="<?php esc_attr( $input_id ); ?>"
-			class="ngt-label ngt-label--<?php esc_attr( $setting->tab ); ?>"
+			for="<?php echo esc_attr( $input_id ); ?>"
+			class="ngt-label ngt-label--<?php echo esc_attr( $setting->tab ); ?>"
 		>
 		<?php
 		echo wp_kses(

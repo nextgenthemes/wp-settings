@@ -565,7 +565,7 @@ class Settings {
 
 			<div
 				class="ngt-settings-interactive"
-				data-wp-interactive="<?php esc_attr( $this->slugged_namespace ); ?>"
+				data-wp-interactive="<?php echo esc_attr( $this->slugged_namespace ); ?>"
 				<?php
 				echo data_wp_context( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					[
@@ -582,7 +582,7 @@ class Settings {
 							<button
 								class="nav-tab"
 								data-wp-on--click="actions.changeTab"
-								data-wp-class--nav-tab-active="context.activeTabs.<?php esc_attr( $k ); ?>"
+								data-wp-class--nav-tab-active="context.activeTabs.<?php echo esc_attr( $k ); ?>"
 								<?php echo data_wp_context( [ 'tab' => $k ] ); // phpcs:ignore ?>
 							>
 								<?php echo esc_html( $v['title'] ); ?>
