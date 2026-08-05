@@ -560,12 +560,12 @@ class Settings {
 		<div class="wrap wrap--nextgenthemes">
 
 			<div class="ngt-width-limiter">
-				<h1><?= esc_html( get_admin_page_title() ); ?></h1>
+				<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			</div>
 
 			<div
 				class="ngt-settings-interactive"
-				data-wp-interactive="<?= esc_attr( $this->slugged_namespace ); ?>"
+				data-wp-interactive="<?php esc_attr( $this->slugged_namespace ); ?>"
 				<?php
 				echo data_wp_context( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					[
@@ -582,10 +582,10 @@ class Settings {
 							<button
 								class="nav-tab"
 								data-wp-on--click="actions.changeTab"
-								data-wp-class--nav-tab-active="context.activeTabs.<?= esc_attr( $k ); ?>"
-								<?= data_wp_context( [ 'tab' => $k ] ); // phpcs:ignore ?>
+								data-wp-class--nav-tab-active="context.activeTabs.<?php esc_attr( $k ); ?>"
+								<?php echo data_wp_context( [ 'tab' => $k ] ); // phpcs:ignore ?>
 							>
-								<?= esc_html( $v['title'] ); ?>
+								<?php echo esc_html( $v['title'] ); ?>
 							</button>
 						<?php endforeach; ?>
 					</div>
@@ -646,7 +646,7 @@ class Settings {
 					type="button"
 					data-wp-bind--hidden="!state.isActiveTab"
 					data-wp-on--click="actions.resetOptionsSection"
-					<?= data_wp_context( [ 'tab' => $key ] ); // phpcs:ignore ?>
+					<?php echo data_wp_context( [ 'tab' => $key ] ); // phpcs:ignore ?>
 				>
 					<?php
 					printf(
