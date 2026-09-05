@@ -54,7 +54,8 @@ if ( ! class_exists( 'Nextgenthemes\WP\Admin\Notices' ) ) {
 		 *     content: string,
 		 *     screen?: string,
 		 *     scope: string,
-		 *     cap?: string,*     class?: string
+		 *     cap?: string,
+		 *     class?: string
 		 * }>
 		 */
 		private array $notices = array();
@@ -208,7 +209,8 @@ if ( ! class_exists( 'Nextgenthemes\WP\Admin\Notices' ) ) {
 		 * @return array<string, array{
 		 *     screen: string,
 		 *     scope: string,
-		 *     cap: string,*     class: string
+		 *     cap: string,
+		 *     class: string
 		 * }>
 		 */
 		private function default_args(): array {
@@ -511,7 +513,8 @@ if ( ! class_exists( 'Nextgenthemes\WP\Admin\Notices' ) ) {
 		 *     content: string,
 		 *     screen?: string,
 		 *     scope: string,
-		 *     cap?: string,*     class?: string
+		 *     cap?: string,
+		 *     class?: string
 		 * }>
 		 */
 		public function get_notices(): array {
