@@ -17,8 +17,8 @@
  * @license   GPL-3.0
  * @link      https://nextgenthemes.com
  * @link      https://github.com/julien731/WP-Dismissible-Notices-Handler/blob/develop/handler.php
- * @copyright 2021 Nicolas Jonas, 2018 Julien Liabeuf
- **/
+ * @copyright 2026 Nicolas Jonas, 2018 Julien Liabeuf
+ */
 
 declare(strict_types = 1);
 
@@ -327,10 +327,8 @@ if ( ! class_exists( 'Nextgenthemes\WP\Admin\Notices' ) ) {
 		 * @since 1.0
 		 *
 		 * @param string $id Notice ID
-		 *
-		 * @return int|bool
 		 */
-		private function dismiss_user( string $id ) {
+		private function dismiss_user( string $id ): bool {
 
 			$dismissed = self::$instance->dismissed_user();
 
@@ -340,7 +338,7 @@ if ( ! class_exists( 'Nextgenthemes\WP\Admin\Notices' ) ) {
 
 			array_push( $dismissed, $id );
 
-			return update_user_meta( get_current_user_id(), 'dnh_dismissed_notices', $dismissed );
+			return (bool) update_user_meta( get_current_user_id(), 'dnh_dismissed_notices', $dismissed );
 		}
 
 		/**
@@ -412,7 +410,7 @@ if ( ! class_exists( 'Nextgenthemes\WP\Admin\Notices' ) ) {
 
 			unset( $dismissed[ $key ] );
 
-			return update_user_meta( get_current_user_id(), 'dnh_dismissed_notices', $dismissed );
+			return (bool) update_user_meta( get_current_user_id(), 'dnh_dismissed_notices', $dismissed );
 		}
 
 		/**
@@ -528,7 +526,14 @@ if ( ! class_exists( 'Nextgenthemes\WP\Admin\Notices' ) ) {
 		 *
 		 * @param string $id Notice ID
 		 *
-		 * @return false|array<string,string>
+		 * @return false|array{
+		 *     type: string,
+		 *     content: string,
+		 *     screen?: string,
+		 *     scope: string,
+		 *     cap?: string,
+		 *     class?: string
+		 * }
 		 */
 		public function get_notice( string $id ) {
 

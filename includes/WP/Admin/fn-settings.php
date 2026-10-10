@@ -86,7 +86,7 @@ function option_block( string $key, SettingValidator $setting, array $tabs ): vo
 					label( $input_id, $setting, $tabs );
 					$textarea_html = sprintf(
 						'<textarea>%s</textarea>',
-						esc_textarea( $setting->default ?? '' )
+						esc_textarea( (string) $setting->default )
 					);
 					echo first_tag_attr(
 						$textarea_html,
